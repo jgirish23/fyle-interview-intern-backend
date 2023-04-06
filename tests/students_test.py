@@ -10,6 +10,16 @@ def test_get_assignments_student_1(client, h_student_1):
     for assignment in data:
         assert assignment['student_id'] == 1
 
+def test_get_assignments_student_3(client, h_student_3):
+    """
+    No data in database: If an student did not exixts
+    """
+    response = client.get(
+        '/teacher/assignments',
+        headers=h_student_3
+    )
+
+    assert response.status_code == 200
 
 def test_get_assignments_student_2(client, h_student_2):
     response = client.get(
