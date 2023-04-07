@@ -75,19 +75,26 @@ class Assignment(db.Model):
 
     @classmethod
     def get_assignments_by_student(cls, student_id):
-        return cls.filter(cls.student_id == student_id).all()
+        student_data=cls.filter(cls.student_id == student_id).all()
+
+        assertions.assert_valid(len(student_data) > 0 ,'student does not exists in database')
+        
+        return student_data
     
     @classmethod
     def get_assignments_by_teacher(cls, teacher_id):
-        return cls.filter(cls.teacher_id == teacher_id).all()
+        teacher_data=cls.filter(cls.teacher_id == teacher_id).all()
+
+        assertions.assert_valid(len(teacher_data) > 0 ,'teacher does not exists in database')
+        return teacher_data
     
     @classmethod
     def give_assignment_grade(cls,_id, grade, principal: Principal):
         assignment = Assignment.get_by_id(_id)
         assertions.assert_found(assignment, 'No assignment with this id was found')
         assertions.assert_valid(assignment.teacher_id == principal.teacher_id, 'This assignment belongs to some other teacher')
-        assertions.assert_valid(grade in [Grade.name for Grade in GradeEnum], 'invalid assignment grade is not correct!')
-        assertions.assert_valid(assignment.state == AssignmentStateEnum.SUBMITTED,'given assignment is not submitted yet!')
+        assertions.assert_valid(grade in [Grade.name for Grade in GradeEnum], 'invalid assignment grade given')
+        assertions.assert_valid(assignment.state == AssignmentStateEnum.SUBMITTED,'given assignment is not submitted')
 
         assignment.grade = GradeEnum[grade]
         db.session.flush()

@@ -4,8 +4,4 @@ omit =
     *__pycache__/*
     *.pytest_cache/*
     *tests/*
-    *server*
-
-[report]
-exclude_lines = 
-    def __repr__
+    *users*

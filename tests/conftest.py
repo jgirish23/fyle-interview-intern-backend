@@ -76,3 +76,13 @@ def h_teacher_3():
     }
 
     return headers
+
+@pytest.fixture
+def h_server_root():
+    headers = {
+        'X-Principal': json.dumps({
+            
+        })
+    }
+
+    return headers

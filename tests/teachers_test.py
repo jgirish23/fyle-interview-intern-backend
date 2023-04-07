@@ -20,7 +20,10 @@ def test_get_assignments_teacher_3(client, h_teacher_3):
         headers=h_teacher_3
     )
 
-    assert response.status_code == 200
+    assert response.status_code == 400
+    error_response = response.json
+    assert error_response['error'] == 'FyleError'
+    assert error_response["message"] == 'teacher does not exists in database'
 
 
 def test_get_assignments_teacher_2(client, h_teacher_2):
@@ -114,7 +117,7 @@ def test_grade_assignment_draft_assignment(client, h_teacher_1):
 
 def test_regrade_assignment_draft_assignment(client, h_teacher_1):
     """
-    failure case: only a submitted assignment can be graded
+    re - grading an graded assignment 
     """
     response = client.post(
         '/teacher/assignments/grade',
